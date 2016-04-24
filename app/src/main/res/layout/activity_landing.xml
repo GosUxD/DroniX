@@ -21,7 +21,7 @@
             android:layout_width="175dp"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:padding="8dp">
 
             <TextView
                 android:layout_width="match_parent"
@@ -37,8 +37,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:padding="8dp"
-                android:text="41.999 N"
-                android:textColor="#212121"
+                android:text="41.999 N "
+                android:textColor="@color/colorPrimary"
                 android:textSize="15sp"
                 android:textStyle="italic"/>
 
@@ -62,8 +62,8 @@
                 android:layout_height="wrap_content"
                 android:gravity="right"
                 android:padding="8dp"
-                android:text="21.456 E"
-                android:textColor="#212121"
+                android:text="21.456 E "
+                android:textColor="@color/colorPrimary"
                 android:textSize="15sp"
                 android:textStyle="italic"/>
 
