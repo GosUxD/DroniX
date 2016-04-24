@@ -165,8 +165,8 @@ public class EarthActivity extends AppCompatActivity implements View.OnClickList
         Notification notification = new NotificationCompat.Builder(this)
                 .setTicker("Drones Nearby")
                 .setSmallIcon(R.drawable.drone_map)
-                .setContentTitle("Caution")
-                .setContentText("There might be drones nearby, fly with caution")
+                .setContentTitle("Warning")
+                .setContentText("There might be drones nearby, be careful")
                 .setContentIntent(pi)
                 .setSound(sound)
                 .setVibrate(new long[]{500, 1000})
@@ -179,10 +179,10 @@ public class EarthActivity extends AppCompatActivity implements View.OnClickList
     private void notifyUserNoFlyZone() {
         PendingIntent pi = PendingIntent.getActivity(getApplicationContext(), 0, new Intent(), 0);
         Notification notification = new NotificationCompat.Builder(this)
-                .setTicker("No Fly Zone!!!")
-                .setSmallIcon(R.drawable.drone_map)
-                .setContentTitle("Caution")
-                .setContentText("There might be no fly zone nearby, fly with caution")
+                .setTicker("No Fly Zone Nearby")
+                .setSmallIcon(R.drawable.danger)
+                .setContentTitle("Warning")
+                .setContentText("There are no fly zone nearby, fly with caution")
                 .setContentIntent(pi)
                 .setVibrate(new long[]{500, 1000})
                 .build();
@@ -269,8 +269,8 @@ public class EarthActivity extends AppCompatActivity implements View.OnClickList
         }
 
 
-        File file = new File(Environment.getExternalStoragePublicDirectory("Sounds"), "Voice 001_sd.m4a");
-        Uri sound = Uri.fromFile(file);
+
+        Uri sound = Uri.parse("android.resource://com.example.daniel.dronix/" + R.raw.beep);
 
         notifyUser(sound);
 
@@ -284,7 +284,7 @@ public class EarthActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void OnNoFlyZoneSuccess(List<NoFlyZone> noFlyZones) {
         mMap.clear();
-        drawUserOnMap();
+        drawUserOnMapZoomedOut();
         for(NoFlyZone currFlyZone : noFlyZones) {
             CircleOptions zone = new CircleOptions().center(new LatLng(currFlyZone.getCoordinate().getLatitude(), currFlyZone.getCoordinate().getLongitude()));
             zone.radius(currFlyZone.getNoFlyCategoryKm()*1000)
@@ -293,15 +293,32 @@ public class EarthActivity extends AppCompatActivity implements View.OnClickList
                     .strokeWidth(1);
 
             mMap.addCircle(zone);
-            Log.i("Dan",currFlyZone.getDistance()+" "+radius+" "+(currFlyZone.getNoFlyCategoryKm()*1000));
-            if(currFlyZone.getDistance() <= (radius + (currFlyZone.getNoFlyCategoryKm()*1000))){
-                notifyUserNoFlyZone();
-            }
         }
+        notifyUserNoFlyZone();
     }
 
     @Override
     public void OnProbabilitySuccess(Probability probability) {
 
     }
+
+    public void drawUserOnMapZoomedOut() {
+        LatLng myPoint = myPosition;
+        LatLng bounds = new LatLng(myPoint.latitude, myPoint.longitude);
+
+        MarkerOptions myPosition = new MarkerOptions().position(myPoint);
+        mMap.addMarker(myPosition);
+
+        CircleOptions circleOptions = new CircleOptions()
+                .center(myPoint)
+                .fillColor(0x5500ff00)
+                .strokeColor(0x55000000)
+                .strokeWidth(1)
+                .radius(radius); // In meters
+        mMap.addCircle(circleOptions);
+
+        CameraUpdate update = CameraUpdateFactory.newLatLngZoom(bounds, 9.8f);
+        mMap.animateCamera(update);
+    }
+
 }

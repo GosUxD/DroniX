@@ -22,7 +22,7 @@ import java.util.List;
 
 public class HomeActivity extends AppCompatActivity implements Presenter.OnWeatherCallback {
 
-    ImageView mEarthMap;
+    ImageView mEarthMap,mMarsMap;
     Toolbar mToolbar;
     ArcProgress mArcProgress;
     Presenter mPresenter;
@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity implements Presenter.OnWeath
 
         mArcProgress  = (ArcProgress) findViewById(R.id.donut_progress);
 
-        mPresenter.getWeatherInfo(myPosition.latitude,myPosition.longitude);
+
 
         mEarthMap = (ImageView) findViewById(R.id.ladning_toggle_map);
         mEarthMap.setOnClickListener(new View.OnClickListener() {
@@ -51,11 +51,25 @@ public class HomeActivity extends AppCompatActivity implements Presenter.OnWeath
                 startActivity(intent);
             }
         });
+        mMarsMap = (ImageView) findViewById(R.id.mars_image_view);
+        mMarsMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, MarsActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         mLat = (TextView) findViewById(R.id.lat_text);
         mLong = (TextView) findViewById(R.id.long_text);
         mCityState = (TextView) findViewById(R.id.location_text);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mPresenter.getWeatherInfo(myPosition.latitude,myPosition.longitude);
     }
 
     @Override

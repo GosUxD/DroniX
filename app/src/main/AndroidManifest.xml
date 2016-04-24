@@ -42,6 +42,13 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:label="DroniX">
         </activity>
+        <activity
+            android:parentActivityName=".view.activities.HomeActivity"
+            android:name=".view.activities.MarsActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:label="DroniX">
+        </activity>
 
     </application>
 
